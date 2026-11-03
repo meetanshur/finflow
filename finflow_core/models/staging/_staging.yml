@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: stg_transactions
+    description: "Clean, masked transactions from Silver"
+    columns:
+      - name: txn_id
+        data_tests:
+          - unique
+          - not_null
+      - name: amount
+        data_tests:
+          - not_null
+      - name: currency
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['INR', 'USD', 'EUR']
+      - name: channel
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['CARD', 'UPI']
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['SUCCESS', 'FAILED', 'PENDING', 'REFUNDED']
+
+  - name: stg_quarantine_transactions
+    description: "Rows rejected by the Silver cleaning step"
+    columns:
+      - name: reject_reason
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['missing_txn_id', 'missing_amount', 'invalid_amount', 'invalid_date']
