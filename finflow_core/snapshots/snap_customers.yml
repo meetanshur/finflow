@@ -1,0 +1,11 @@
+snapshots:
+  - name: snap_customers
+    relation: ref('customers')
+    config:
+      schema: snapshots
+      unique_key: customer_id
+      strategy: check
+      check_cols:
+        - segment
+        - kyc_status
+        - city

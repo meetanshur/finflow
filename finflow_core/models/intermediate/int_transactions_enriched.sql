@@ -20,7 +20,8 @@ select
     t.city,
     t.device,
     t.email_domain,
-    t.meta_valid
+    t.meta_valid,
+    t._silver_loaded_at
 from {{ ref('stg_transactions') }} t
 left join {{ ref('fx_rates') }} f
     on t.currency = f.currency

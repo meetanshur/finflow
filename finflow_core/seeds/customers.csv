@@ -1,0 +1,8 @@
+customer_id,segment,kyc_status,city
+C001,Premium,VERIFIED,Mumbai
+C002,Mass,VERIFIED,Mumbai
+C003,Mass,VERIFIED,Delhi
+C004,Premium,VERIFIED,Pune
+C005,Mass,VERIFIED,Chennai
+C006,Affluent,VERIFIED,Pune
+C007,Mass,PENDING,Jaipur
