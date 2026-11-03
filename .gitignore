@@ -6,3 +6,5 @@ target/
 dbt_packages/
 logs/
 .vscode/
+profiles.yml
+.user.yml
