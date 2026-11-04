@@ -33,6 +33,9 @@ models:
   finflow_core:
     staging:
       +materialized: view
+    marts:
+      +materialized: table
+      +schema: gold
       
 seeds:
   finflow_core:
@@ -40,3 +43,7 @@ seeds:
     fx_rates:
       +column_types:
         rate_to_inr: decimal(18,4)
+
+vars:
+  fraud_high_amount_inr: 100000
+  fraud_travel_window_minutes: 30

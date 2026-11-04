@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: fct_transactions
+    columns:
+      - name: txn_id
+        data_tests:
+          - unique
+          - not_null
+      - name: amount_inr
+        data_tests:
+          - not_null
+
+  - name: mart_daily_customer_spend
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null
+
+  - name: mart_merchant_category_summary
+    columns:
+      - name: merchant_group
+        data_tests:
+          - unique
+          - not_null
+
+  - name: mart_fraud_flag_candidates
+    columns:
+      - name: txn_id
+        data_tests:
+          - not_null
+      - name: rule_name
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['high_amount', 'impossible_travel']
+
+  - name: mart_monthly_account_kpis
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null
+      - name: success_rate_pct
+        data_tests:
+          - not_null
