@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dbt
+        run: pip install dbt-core dbt-databricks
+
+      - name: Check Python syntax
+        run: python -m py_compile src/*.py notebooks/*.py
+
+      - name: Write dummy dbt profile (no real credentials)
+        run: |
+          mkdir -p $HOME/.dbt
+          cat > $HOME/.dbt/profiles.yml <<'EOF'
+          finflow_core:
+            target: ci
+            outputs:
+              ci:
+                type: databricks
+                host: example.cloud.databricks.com
+                http_path: /sql/1.0/warehouses/placeholder
+                token: placeholder
+                catalog: workspace
+                schema: staging
+          EOF
+
+      - name: Parse dbt project
+        run: dbt parse --project-dir finflow_core
