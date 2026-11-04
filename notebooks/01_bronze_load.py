@@ -1,7 +1,12 @@
+# Databricks notebook source
 from pyspark.sql import functions as F
 
-SOURCE_FILE = "raw_transactions_batch2.csv"   # batch 1 was: raw_transactions.csv
-WRITE_MODE = "append"                          # batch 1 was: overwrite
+dbutils.widgets.text("source_file", "raw_transactions.csv")
+dbutils.widgets.dropdown("write_mode", "overwrite", ["overwrite", "append"])
+
+SOURCE_FILE = dbutils.widgets.get("source_file")
+WRITE_MODE = dbutils.widgets.get("write_mode")
+print(f"Loading {SOURCE_FILE} with mode {WRITE_MODE}")
 
 SRC = f"/Volumes/workspace/bronze/raw_files/{SOURCE_FILE}"
 TARGET = "workspace.bronze.raw_transactions"
