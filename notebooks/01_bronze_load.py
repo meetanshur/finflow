@@ -1,6 +1,9 @@
 from pyspark.sql import functions as F
 
-SRC = "/Volumes/workspace/bronze/raw_files/raw_transactions.csv"
+SOURCE_FILE = "raw_transactions_batch2.csv"   # batch 1 was: raw_transactions.csv
+WRITE_MODE = "append"                          # batch 1 was: overwrite
+
+SRC = f"/Volumes/workspace/bronze/raw_files/{SOURCE_FILE}"
 TARGET = "workspace.bronze.raw_transactions"
 
 df = (
@@ -13,10 +16,11 @@ df = (
     .withColumn("_source_file", F.col("_metadata.file_path"))
 )
 
-(df.write.format("delta")
-   .mode("overwrite")
-   .option("overwriteSchema", "true")
-   .saveAsTable(TARGET))
+writer = df.write.format("delta").mode(WRITE_MODE)
+if WRITE_MODE == "overwrite":
+    writer = writer.option("overwriteSchema", "true")
+writer.saveAsTable(TARGET)
 
-print("rows:", spark.table(TARGET).count())
-display(spark.table(TARGET))
+print("file loaded:", SOURCE_FILE, "| mode:", WRITE_MODE)
+print("rows in bronze now:", spark.table(TARGET).count())
+display(spark.table(TARGET).groupBy("_source_file").count())

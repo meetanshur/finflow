@@ -24,9 +24,10 @@ select
     city,
     device,
     meta_valid,
+    _ingested_at,
     _silver_loaded_at
 from {{ ref('int_transactions_enriched') }}
 
 {% if is_incremental() %}
-where _silver_loaded_at > (select max(_silver_loaded_at) from {{ this }})
+where _ingested_at > (select max(_ingested_at) from {{ this }})
 {% endif %}

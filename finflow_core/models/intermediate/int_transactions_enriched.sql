@@ -21,6 +21,7 @@ select
     t.device,
     t.email_domain,
     t.meta_valid,
+    t._ingested_at,
     t._silver_loaded_at
 from {{ ref('stg_transactions') }} t
 left join {{ ref('fx_rates') }} f
